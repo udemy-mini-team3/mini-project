@@ -8,9 +8,9 @@
     </select>-->
 
     <resultMap type="HashMap" id="boardmap">
-        <result property="userSeq" column="seq"/>
+        <result property="userSeq" column="userSeq"/>
         <result property="nickname" column="nickname"/>
-        <result property="boardSeq" column="seq"/>
+        <result property="boardSeq" column="boardSeq"/>
         <result property="title" column="title"/>
         <result property="content" column="content"/>
         <result property="insertDate" column="insert_date"/>
@@ -18,9 +18,13 @@
     </resultMap>
 
     <select id="getBoard" resultMap="boardmap" parameterType="int">
-        SELECT u.seq, u.nickname, b.seq, b.title, b.content, b.insert_date, b.viewcount
+        SELECT u.seq as 'userSeq', u.nickname, b.seq as 'boardSeq', b.title, b.content, b.insert_date, b.viewcount
         FROM board b JOIN user u ON b.writer = u.seq
         WHERE b.seq = #{seq}
     </select>
+
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM board WHERE seq = #{seq}
+    </delete>
 
 </mapper>
