@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mini.dao.CommentDao">
+
+    <resultMap type="HashMap" id="commentmap">
+        <result property="boardSeq" column="boardSeq"/>
+        <result property="commentSeq" column="commentSeq"/>
+        <result property="writer" column="writer"/>
+        <result property="content" column="content"/>
+        <result property="insertDate" column="insert_date"/>
+        <result property="userSeq" column="userSeq"/>
+        <result property="nickname" column="nickname"/>
+    </resultMap>
+
+    <select id="getCommentList" resultMap="commentmap" parameterType="int">
+        SELECT b.seq AS boardSeq, c.seq AS commentSeq, c.writer, c.content, c.insert_date, u.seq AS userSeq, u.nickname
+        FROM comment c JOIN board b ON c.board_seq = b.seq
+        JOIN user u ON c.writer = u.seq
+        WHERE b.seq = #{seq}
+    </select>
+
+</mapper>
