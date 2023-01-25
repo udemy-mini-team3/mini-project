@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service("boardservice")
+@Service("boardService")
 public class BoardServiceImpl implements BoardService {
 
     @Autowired

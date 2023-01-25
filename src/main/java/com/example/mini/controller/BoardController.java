@@ -17,11 +17,11 @@ import java.util.Map;
 public class BoardController {
 
     @Autowired
-    @Qualifier("boardservice")
+    @Qualifier("boardService")
     BoardService service;
 
     @Autowired
-    @Qualifier("commentservice")
+    @Qualifier("commentService")
     CommentService commentService;
     @GetMapping("/")
   public String main() {
