@@ -2,6 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.mini">
+<mapper namespace="com.example.mini.dao.BoardDao">
+<!--    <select id="getBoard" parameterType="int" resultType="boarddto">
+        select * from board where seq=#{seq}
+    </select>-->
+
+    <resultMap type="HashMap" id="boardmap">
+        <result property="userSeq" column="seq"/>
+        <result property="nickname" column="nickname"/>
+        <result property="boardSeq" column="seq"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="insertDate" column="insert_date"/>
+        <result property="viewcount" column="viewcount"/>
+    </resultMap>
+
+    <select id="getBoard" resultMap="boardmap" parameterType="int">
+        SELECT u.seq, u.nickname, b.seq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        WHERE b.seq = #{seq}
+    </select>
 
 </mapper>
