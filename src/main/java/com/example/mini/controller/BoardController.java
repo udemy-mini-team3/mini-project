@@ -17,18 +17,26 @@ public class BoardController {
     @Qualifier("boardservice")
     BoardService service;
 
-  @GetMapping("/")
+    @GetMapping("/")
   public String main() {
       return "sample";
   }
+
     @GetMapping("/board/detail")
     public ModelAndView board(@RequestParam(value="seq", required=true) int seq) {
         ModelAndView mv= new ModelAndView();
-
         Map<String, String> board = service.getBoard(seq);
+
         mv.addObject("board", board);
         mv.setViewName("board/detail");
         return mv;
     }
+
+    @GetMapping("/board/delete")
+    public String delete(@RequestParam(value="seq", required=true) int seq) {
+        service.deleteBoard(seq);
+        return "redirect:/";
+    }
+
 
 }

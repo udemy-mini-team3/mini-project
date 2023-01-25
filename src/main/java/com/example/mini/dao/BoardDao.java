@@ -8,12 +8,15 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface BoardDao {
-    public Map<String, String> getBoard(int seq);
 
     // getBoard
-	// getBoardList
-	// updateBoard
-	// deleteBoard
-	// insertBoard
+    Map<String, String> getBoard(int seq);
+
+    // getBoardList
+    // updateBoard
+    // deleteBoard
+    void deleteBoard(int seq);
+
+    // insertBoard
 
 }

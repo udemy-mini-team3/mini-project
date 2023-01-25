@@ -16,4 +16,11 @@ public class BoardServiceImpl implements BoardService {
     public Map<String, String> getBoard(int seq) {
         return dao.getBoard(seq);
     }
+
+    @Override
+    public void deleteBoard(int seq) {
+        dao.deleteBoard(seq);
+    }
+
+
 }
