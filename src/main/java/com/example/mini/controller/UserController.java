@@ -36,7 +36,7 @@ public class UserController {
         UserDto dto = service.getUser(email);
         String view = "";
         if (dto == null) {
-            view = "/register";
+            view = "redirect:/register";
         } else {
             if (pw.equals(dto.getPw())) {
                 session.setAttribute(SessionConst.LOGIN_USER, dto);
@@ -86,11 +86,9 @@ public class UserController {
     @PostMapping("/myPage")
     public String myPageEdit(@ModelAttribute("userDto") @Valid UserDto userDto,
                              BindingResult bindingResult, HttpSession session) {
-
         if(bindingResult.hasErrors()){
             return "user/myPage";
         }
-
 
         if (checkDuplicateEmail(userDto, session)){
             bindingResult.rejectValue("email", "duplicate.email");
@@ -100,10 +98,6 @@ public class UserController {
         service.update(userDto.getEmail(), userDto);
         //회원 정보 변경에 따른 세션 변경
         session.setAttribute(SessionConst.LOGIN_USER, service.getUser(userDto.getEmail()));
-
-
-
-
         return "redirect:/myPage";
     }
 
@@ -112,7 +106,6 @@ public class UserController {
         int emailCount = service.getEmailCount(userDto.getEmail());
 
         UserDto sessionUserDto = (UserDto) httpSession.getAttribute(SessionConst.LOGIN_USER);
-
         if(userDto.getEmail().equals(sessionUserDto.getEmail()))
             return false;
 
@@ -151,16 +144,12 @@ public class UserController {
             return "user/pwChange";
         }
 
-
         UserDto userDto = (UserDto) session.getAttribute(SessionConst.LOGIN_USER);
         if(checkPw(userDto, userPwdDto, bindingResult))
             return "user/pwChange";
-
-
         //성공 로직
         service.updatePw(userDto.getSeq(), userPwdDto.getNewPwd());
         redirectAttributes.addFlashAttribute("result", "success");
-
         //비밀번호 변경에 따른 세션 변경
         session.setAttribute(SessionConst.LOGIN_USER, service.getUser(userDto.getEmail()));
 
@@ -171,7 +160,6 @@ public class UserController {
     private boolean checkPw(UserDto userDto, UserPwdDto userPwdDto, BindingResult bindingResult) {
 
         boolean checkResult = false;
-
         //기존 비밀번호가 일치하지 않는다면
         if(!service.getPwdBySeq(userDto.getSeq()).equals(userPwdDto.getOldPwd())){
             bindingResult.rejectValue("oldPwd", "notSame.oldPwd");
@@ -183,7 +171,6 @@ public class UserController {
             bindingResult.rejectValue("newPwdConf", "notSame.newPwd");
             checkResult = true;
         }
-
         return checkResult;
     }
 
