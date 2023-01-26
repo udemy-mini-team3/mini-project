@@ -40,7 +40,7 @@
 <%@ include file="../common/nav.jsp"%>
 
 <div class="container">
-    <div class="container text-center">
+    <div class="container text-center py-3">
         <div class="row">
             <div class="col">
                 <button type="button" class="btn btn-outline-secondary" onclick="location.href='writeboard'">글 작성</button>
