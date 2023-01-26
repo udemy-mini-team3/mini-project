@@ -9,4 +9,10 @@ import java.util.Map;
 public interface CommentService {
     List<Map<String,Object>> getCommentList(int seq);
     void insertComment(CommentDto dto);
+
+    void updateComment(CommentDto dto);
+
+    CommentDto getComment(int seq);
+
+    void deleteComment(int seq);
 }

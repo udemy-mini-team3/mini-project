@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <%@ include file="../common/tag.jsp"%>
 <title>Insert title here</title>
+<script src="<%=request.getContextPath()%>/js/jquery-3.6.1.min.js"></script>
 <script>
 $(document).ready(function(){
     $("#btn-delete-board").on('click', function() {
@@ -15,6 +16,12 @@ $(document).ready(function(){
 
     $("#btn-insert-comment").on('click', function() {
         console.log("insert 작동");
+
+        if($("#content").val().trim() == "") {
+            alert("내용을 입력해주세요!");
+            return;
+        }
+
         $.ajax({
             url: '/comment/insert',
             type: 'post',
@@ -23,16 +30,16 @@ $(document).ready(function(){
             success: function(data) {
                 $("#commentbox").html('');
                 for (var i = 0; i < data.length; i++) {
-                    $("#commentbox").append();
-                    $("#commentbox").append("<div class='col-8 md'>");
-                    $("#commentbox").append("<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + data[i].insertDate + "</span></p>");
-                    $("#commentbox").append("<p>" + data[i].content + "</p>");
-                    $("#commentbox").append("</div>");
-                    $("#commentbox").append("<div class='col-10 btn-right'>");
-                    $("#commentbox").append("<button type='button' class='btn btn-primary btn-sm' id='btn-modify-comment'>수정하기</button>");
-                    $("#commentbox").append("<button type='button' class='btn btn-primary btn-sm' id='btn-delete-comment'>삭제하기</button>");
-                    $("#commentbox").append("</div>");
-                    $("#commentbox").append("<hr>");
+                    $("#commentbox").append("<div class='row'><div class='col-2'></div>"
+                    + "<div class='col-8 '>"
+                    + "<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + data[i].insertDate + "</span></p>"
+                    + "<p>" + data[i].content + "</p>"
+                    + "</div>"
+                    + "<div class='col-8 btn-right'>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-" + data[i].commentSeq +"'>수정하기</button>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-delete-" + data[i].commentSeq +"'>삭제하기</button></div>"
+                    + "</div>"
+                    + "<hr>");
                 }},
                 error : function(request, status, error) {
                     alert("code:"+request.status+"\n"
@@ -56,8 +63,8 @@ $(document).ready(function(){
 </style>
 </head>
 <body>
-<div class="container">
 <%@ include file="../common/nav.jsp"%>
+<div class="container">
     <c:if test="${board == null || board.isEmpty()}">
         <script>
             alert("잘못된 접근입니다.");
@@ -119,8 +126,8 @@ $(document).ready(function(){
                 <p>${comment.content}</p>
             </div>
             <div class="col-10 btn-right">
-                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-comment"+${comment.writer}>수정하기</button>
-                <button type="button" class="btn btn-danger btn-sm" id="btn-delete-comment"+${comment.writer}>삭제하기</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
+                <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
             </div>
 		    <hr>
         </c:forEach>
@@ -145,6 +152,7 @@ $(document).ready(function(){
         </div>
       </div>
     </div>
+
 </div>
 
 </body>

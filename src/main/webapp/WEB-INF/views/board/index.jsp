@@ -81,7 +81,7 @@
         </thead>
         <tbody id="ajaxtbody">
         <c:forEach items="${boardList }" var="board">
-        <tr onclick="location.href='getboard?seq=${board.boardSeq}'" id="ajaxtr">
+        <tr onclick="location.href='board/detail?seq=${board.boardSeq}'" id="ajaxtr">
             <th scope="row">${board.boardSeq}</th>
             <td>${board.title}</td>
             <td>${board.content}</td>
