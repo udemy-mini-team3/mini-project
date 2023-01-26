@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mini.dao.BoardDao">
+
+    <select id="getBoardCount" resultType="int">
+        select count(*) from board
+    </select>
+
+    <resultMap type="HashMap" id="boardmap">
+        <result property="userSeq" column="userSeq"/>
+        <result property="nickname" column="nickname"/>
+        <result property="boardSeq" column="boardSeq"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="insertDate" column="insert_date"/>
+        <result property="viewcount" column="viewcount"/>
+    </resultMap>
+
+    <select id="getBoardList" resultMap="boardmap" parameterType="int">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by boardSeq asc limit #{limit}, 5
+    </select>
+
+   <!-- <select id="getBoardList" parameterType="int" resultType="boarddto">
+        select * from board order by insert_date asc limit #{limit}, 5
+    </select>-->
+
+</mapper>
