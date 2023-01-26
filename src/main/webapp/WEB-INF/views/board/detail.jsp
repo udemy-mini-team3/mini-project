@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <%@ include file="../common/tag.jsp"%>
 <title>Insert title here</title>
+<script src="<%=request.getContextPath()%>/js/jquery-3.6.1.min.js"></script>
 <script>
 $(document).ready(function(){
     $("#btn-delete-board").on('click', function() {
@@ -56,8 +57,8 @@ $(document).ready(function(){
 </style>
 </head>
 <body>
-<div class="container">
 <%@ include file="../common/nav.jsp"%>
+<div class="container">
     <c:if test="${board == null || board.isEmpty()}">
         <script>
             alert("잘못된 접근입니다.");
