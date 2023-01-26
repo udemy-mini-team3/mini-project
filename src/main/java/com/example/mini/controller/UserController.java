@@ -6,11 +6,15 @@ import com.example.mini.util.SessionConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -66,4 +70,57 @@ public class UserController {
         }
         return "redirect:/";
     }
+
+    //마이페이지
+    @GetMapping("/myPage")
+    public String myPage(HttpSession httpSession, Model model) {
+        String email = (String)httpSession.getAttribute(SessionConst.LOGIN_USER);
+
+        UserDto userDto = service.getUser(email);
+
+        model.addAttribute("userDto", userDto);
+        return "user/myPage";
+    }
+
+    //마이페이지 수정
+    @PostMapping("/myPage")
+    public String myPageEdit(@ModelAttribute("userDto") @Valid UserDto userDto,
+                             BindingResult bindingResult, HttpSession httpSession) {
+
+        if(bindingResult.hasErrors()){
+            return "user/myPage";
+        }
+
+
+        if (checkDuplicateEmail(userDto, httpSession)){
+            bindingResult.rejectValue("email", "duplicate.email");
+            return "user/myPage";
+        }
+
+        service.update(userDto.getEmail(), userDto);
+        return "redirect:/myPage";
+    }
+
+    //이메일 중복 검사 함수
+    private boolean checkDuplicateEmail(UserDto userDto, HttpSession httpSession) {
+        int emailCount = service.getEmailCount(userDto.getEmail());
+
+        if(userDto.getEmail().equals(httpSession.getAttribute(SessionConst.LOGIN_USER)))
+            return false;
+
+        if(emailCount > 0){
+            return true;
+        }
+        return false;
+    }
+
+    //마이페이지-회원탈퇴
+    @GetMapping("/user/delete")
+    public String delete(HttpSession httpSession) {
+        String email = (String)httpSession.getAttribute(SessionConst.LOGIN_USER);
+        service.delete(email);
+        httpSession.invalidate();
+        return "redirect:/";
+    }
+
 }

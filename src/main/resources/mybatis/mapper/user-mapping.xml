@@ -11,4 +11,24 @@
         insert into user (email, pw, nickname, insert_date, update_date)
         values(#{email}, #{pw}, #{nickname}, now(), now())
     </insert>
+
+
+    <update id="update" >
+        update user
+        set email=#{userDto.email}, nickname=#{userDto.nickname}, update_date=now()
+        where email = #{email}
+    </update>
+
+    <select id="getEmailCount" resultType="int">
+        select count(*)
+        from user
+        where email= #{email}
+    </select>
+
+
+    <update id="delete">
+        update user
+        set deleted='Y'
+        where email = #{email}
+    </update>
 </mapper>
