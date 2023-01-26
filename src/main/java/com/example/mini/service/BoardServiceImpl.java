@@ -15,6 +15,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Map<String, Object> getBoard(int seq) {
+        dao.updateViewcount(seq);
         return dao.getBoard(seq);
     }
 

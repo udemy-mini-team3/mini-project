@@ -52,4 +52,8 @@
         DELETE FROM board WHERE seq = #{seq}
     </delete>
 
+    <update id="updateViewcount" parameterType="int">
+        update board set viewcount = viewcount+1 where seq = #{seq};
+    </update>
+
 </mapper>

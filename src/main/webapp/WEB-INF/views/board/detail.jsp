@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +13,7 @@ $(document).ready(function(){
         alert("삭제가 완료되었습니다!");
     })
 
+console.log(${isWriter});
     $("#btn-insert-comment").on('click', function() {
         console.log("insert 작동");
 
@@ -26,7 +26,7 @@ $(document).ready(function(){
             url: '/comment/insert',
             type: 'post',
             dataType: 'json',
-            data: {'boardSeq':${board.boardSeq }, 'writer':2, 'content':$("#content").val()},
+            data: {'boardSeq':${board.boardSeq }, 'writer':${userDto.seq }, 'content':$("#content").val()},
             success: function(data) {
                 $("#commentbox").html('');
                 for (var i = 0; i < data.length; i++) {
@@ -36,8 +36,8 @@ $(document).ready(function(){
                     + "<p>" + data[i].content + "</p>"
                     + "</div>"
                     + "<div class='col-8 btn-right'>"
-                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-" + data[i].commentSeq +"'>수정하기</button>"
-                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-delete-" + data[i].commentSeq +"'>삭제하기</button></div>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-${comment.commentSeq}' onclick='location.href='/comment/update/${comment.commentSeq}''>수정하기</button>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-delete-${comment.commentSeq}' onclick='location.href='/comment/delete/${comment.commentSeq}''>삭제하기</button></div>"
                     + "</div>"
                     + "<hr>");
                 }},
@@ -74,27 +74,25 @@ $(document).ready(function(){
 
 	<div class="row mt-5 md" id="box-detail">
 		<div class="col-8 mb-3 md">
-			<h3><b>${board.boardSeq }번째 글입니다.</b></h3>
-			<h3><b>${board.title } ${board.boardSeq }</b></h3>
+			<h3><b>${board.title }</b></h3>
 			<p><span>작성자 ${board.nickname}</span>&nbsp;| <span>${board.insertDate }</span>&nbsp;| <span>조회수 ${board.viewcount }</span></p>
 			<p>${board.content }</p>
 		</div>
-		<div id="box-boardbtn" class="btn-right col-10">
-			<button type="button" class="btn btn-primary btn-sm" id="btn-modify-board">수정하기</button>
-			<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
-		</div>
+        <c:if test="${isWriter == true}">
+            <div id="box-boardbtn" class="btn-right col-10">
+                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-board">수정하기</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
+            </div>
+        </c:if>
 	</div>
 
 	<br><br><hr><br><br>
 
     <c:choose>
-        <c:when test="${empty loginid}">
+        <c:when test="${empty userDto}">
             <div class="row md mb-3">
                 <div class="col-8 md mb-5">
                     <textarea style="width:100%; text-align:center;" rows="3" placeholder="로그인 후 사용 가능합니다." readonly></textarea>
-                </div>
-                <div class="btn-right col-10">
-                    <button type="button" class="btn btn-primary btn-sm" id="btn-insert-comment" disabled>등록하기</button>
                 </div>
             </div>
         </c:when>
@@ -125,10 +123,12 @@ $(document).ready(function(){
                 <p><span>${comment.nickname}</span>&nbsp;<span>${comment.insertDate}</span></p>
                 <p>${comment.content}</p>
             </div>
-            <div class="col-10 btn-right">
-                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
-                <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
-            </div>
+            <c:if test="${userDto.seq == comment.writer}">
+                <div class="col-10 btn-right">
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
+                </div>
+		    </c:if>
 		    <hr>
         </c:forEach>
         </div>
