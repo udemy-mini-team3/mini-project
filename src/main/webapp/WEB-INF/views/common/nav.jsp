@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="<%=request.getContextPath()%>/">
-            <img src="img/bae.jpg" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
+            <img src="/img/bae.jpg" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
             배용남
         </a>
         <div class="collapse navbar-collapse" id="navbarNav">
