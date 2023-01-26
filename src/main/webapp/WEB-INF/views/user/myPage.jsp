@@ -16,11 +16,10 @@
 <body>
 
 <%@ include file="../common/nav.jsp"%>
-<div class="container w-50 p-3">
-    <div class="py-5 text-center">
+<div class="container w-50 p-1">
+    <div class="py-3 text-center">
         <h2>마이 페이지</h2>
     </div>
-
     <form:form action="" method="post" modelAttribute="userDto">
 
         <div>
