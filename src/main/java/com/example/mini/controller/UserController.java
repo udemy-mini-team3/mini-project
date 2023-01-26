@@ -73,10 +73,8 @@ public class UserController {
 
     //마이페이지
     @GetMapping("/myPage")
-    public String myPage(HttpSession httpSession, Model model) {
-        String email = (String)httpSession.getAttribute(SessionConst.LOGIN_USER);
-
-        UserDto userDto = service.getUser(email);
+    public String myPage(HttpSession session, Model model) {
+        UserDto userDto = (UserDto) session.getAttribute(SessionConst.LOGIN_USER);
 
         model.addAttribute("userDto", userDto);
         return "user/myPage";
@@ -85,19 +83,25 @@ public class UserController {
     //마이페이지 수정
     @PostMapping("/myPage")
     public String myPageEdit(@ModelAttribute("userDto") @Valid UserDto userDto,
-                             BindingResult bindingResult, HttpSession httpSession) {
+                             BindingResult bindingResult, HttpSession session) {
 
         if(bindingResult.hasErrors()){
             return "user/myPage";
         }
 
 
-        if (checkDuplicateEmail(userDto, httpSession)){
+        if (checkDuplicateEmail(userDto, session)){
             bindingResult.rejectValue("email", "duplicate.email");
             return "user/myPage";
         }
 
         service.update(userDto.getEmail(), userDto);
+        //회원 정보 변경에 따른 세션 변경
+        session.setAttribute(SessionConst.LOGIN_USER, service.getUser(userDto.getEmail()));
+
+
+
+
         return "redirect:/myPage";
     }
 
@@ -105,7 +109,9 @@ public class UserController {
     private boolean checkDuplicateEmail(UserDto userDto, HttpSession httpSession) {
         int emailCount = service.getEmailCount(userDto.getEmail());
 
-        if(userDto.getEmail().equals(httpSession.getAttribute(SessionConst.LOGIN_USER)))
+        UserDto sessionUserDto = (UserDto) httpSession.getAttribute(SessionConst.LOGIN_USER);
+
+        if(userDto.getEmail().equals(sessionUserDto.getEmail()))
             return false;
 
         if(emailCount > 0){
@@ -117,8 +123,8 @@ public class UserController {
     //마이페이지-회원탈퇴
     @GetMapping("/user/delete")
     public String delete(HttpSession httpSession) {
-        String email = (String)httpSession.getAttribute(SessionConst.LOGIN_USER);
-        service.delete(email);
+        UserDto userDto = (UserDto)httpSession.getAttribute(SessionConst.LOGIN_USER);
+        service.delete(userDto.getEmail());
         httpSession.invalidate();
         return "redirect:/";
     }
