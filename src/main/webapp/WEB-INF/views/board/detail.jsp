@@ -127,7 +127,7 @@ $(document).ready(function(){
             </div>
             <div class="col-10 btn-right">
                 <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
-                <button type="button" class="btn btn-primary btn-sm" id="btn-delete-${comment.commentSeq}" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">삭제하기</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
             </div>
 		    <hr>
         </c:forEach>
@@ -152,24 +152,7 @@ $(document).ready(function(){
         </div>
       </div>
     </div>
-    <!-- Comment delete modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
-          </div>
-          <div class="modal-body" style="text-align: center">
-            <h4><strong>정말 삭제하시겠습니까?</strong><h4>
-            <p class="fs-5 mb-5">삭제 후 복구는 불가합니다.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-            <button type="button" class="btn btn-primary" id="btn-delete-board">확인</button>
-          </div>
-        </div>
-      </div>
-    </div>
+
 </div>
 
 </body>

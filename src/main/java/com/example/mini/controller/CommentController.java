@@ -42,14 +42,12 @@ public class CommentController {
         commentService.updateComment(dto);
         return "redirect:/board/detail?seq="+dto.getBoardSeq();
     }
-    public String redirect() {
-        return "redirect:/";
-    }
-    // delete
 
     @GetMapping("/comment/delete/{seq}")
-    public String deleteComment(@PathVariable("seq") int seq) {
+    public String deleteComment(@PathVariable("seq") int seq)  {
+        int boardSeq = commentService.getComment(seq).getBoardSeq();
         commentService.deleteComment(seq);
-        return "redirect:/";
+        return "redirect:/board/detail?seq="+boardSeq;
     }
+
 }
