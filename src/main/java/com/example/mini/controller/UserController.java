@@ -37,7 +37,7 @@ public class UserController {
             view = "/register";
         } else {
             if (pw.equals(dto.getPw())) {
-                session.setAttribute(SessionConst.LOGIN_USER, email);
+                session.setAttribute(SessionConst.LOGIN_USER, dto);
                 view = "redirect:/";
             } else {
                 view = "user/loginForm";
