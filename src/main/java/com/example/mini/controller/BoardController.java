@@ -75,14 +75,13 @@ public class BoardController {
     @ResponseBody
     @GetMapping(value = "/boardlist/sorted/{page}", produces = {"application/json;charset=utf-8"})
     public List<Map<String, Object>> sortedList(@PathVariable("page") int page) {
-        //int limit = (page - 1) * 5 ;
         List<Map<String, Object>> boardList = new ArrayList<>();
         if (page == 1) {
-            boardList = service.getReversedBoardList(0);
+            boardList = service.getRecentBoards();
         } else if (page == 2) {
-            boardList = service.getReversedBoardList(0);
+            boardList = service.getPastBoards();
         } else if (page == 3) {
-            boardList = service.getReversedBoardList(0);
+            boardList = service.getFamousBoards();
         }
         return boardList;
     }

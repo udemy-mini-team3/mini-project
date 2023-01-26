@@ -19,4 +19,31 @@ public class UserServiceImpl implements UserService {
     public int insertUser(UserDto dto) {
         return dao.insertUser(dto);
     }
+
+
+    @Override
+    public void update(String email, UserDto userDto) {
+        dao.update(email, userDto);
+    }
+
+    @Override
+    public int getEmailCount(String email) {
+        return dao.getEmailCount(email);
+    }
+
+
+    @Override
+    public void delete(String email) {
+        dao.delete(email);
+    }
+
+    @Override
+    public String getPwdBySeq(int seq) {
+        return dao.getPwdBySeq(seq);
+    }
+
+    @Override
+    public void updatePw(int seq, String newPwd) {
+        dao.updatePw(seq, newPwd);
+    }
 }

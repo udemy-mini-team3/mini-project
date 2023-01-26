@@ -15,8 +15,8 @@
 </head>
 <body>
 <%@ include file="../common/nav.jsp"%>
-<div class="container">
-    <div class="py-5 text-center">
+<div class="container w-50 p-1">
+    <div class="py-3 text-center">
         <h2>로그인</h2>
     </div>
     <form action="<%=request.getContextPath()%>/login" method="post">
