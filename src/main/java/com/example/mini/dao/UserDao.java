@@ -15,4 +15,8 @@ public interface UserDao {
     void update(@Param("email") String email, @Param("userDto") UserDto dto);
     int getEmailCount(String email);
     void delete(String email);
+
+    String getPwdBySeq(int seq);
+
+    void updatePw(@Param("seq") int seq, @Param("newPwd") String newPwd);
 }

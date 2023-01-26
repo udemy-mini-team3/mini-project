@@ -31,4 +31,16 @@
         set deleted='Y'
         where email = #{email}
     </update>
+
+    <update id="updatePw">
+        update user
+        set pw=#{newPwd}
+        where seq = #{seq}
+    </update>
+
+    <select id="getPwdBySeq" resultType="String">
+        select pw
+        from user
+        where seq = #{seq}
+    </select>
 </mapper>

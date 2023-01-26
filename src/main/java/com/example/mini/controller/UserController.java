@@ -1,5 +1,6 @@
 package com.example.mini.controller;
 
+import com.example.mini.dao.UserPwdDto;
 import com.example.mini.dto.UserDto;
 import com.example.mini.service.UserService;
 import com.example.mini.util.SessionConst;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -127,6 +129,62 @@ public class UserController {
         service.delete(userDto.getEmail());
         httpSession.invalidate();
         return "redirect:/";
+    }
+
+    //비밀번호 변경 화면
+    @GetMapping("/pwChange")
+    public String changePwForm(Model model){
+
+        Object success = model.getAttribute("success");
+        model.addAttribute("userPwdDto",new UserPwdDto());
+
+        return "user/pwChange";
+    }
+
+    //비밀번호 변경
+    @PostMapping ("/pwChange")
+    public String changePwd( @ModelAttribute("userPwdDto") @Valid UserPwdDto userPwdDto, BindingResult bindingResult,
+                             HttpSession session, RedirectAttributes redirectAttributes){
+
+
+        if(bindingResult.hasErrors()){
+            return "user/pwChange";
+        }
+
+
+        UserDto userDto = (UserDto) session.getAttribute(SessionConst.LOGIN_USER);
+        if(checkPw(userDto, userPwdDto, bindingResult))
+            return "user/pwChange";
+
+
+        //성공 로직
+        service.updatePw(userDto.getSeq(), userPwdDto.getNewPwd());
+        redirectAttributes.addFlashAttribute("result", "success");
+
+        //비밀번호 변경에 따른 세션 변경
+        session.setAttribute(SessionConst.LOGIN_USER, service.getUser(userDto.getEmail()));
+
+        return "redirect:/myPage";
+    }
+
+    //패스워드 검사 함수
+    private boolean checkPw(UserDto userDto, UserPwdDto userPwdDto, BindingResult bindingResult) {
+
+        boolean checkResult = false;
+
+        //기존 비밀번호가 일치하지 않는다면
+        if(!service.getPwdBySeq(userDto.getSeq()).equals(userPwdDto.getOldPwd())){
+            bindingResult.rejectValue("oldPwd", "notSame.oldPwd");
+            checkResult = true;
+        }
+
+        //새 비밀번호와 새 비밀번호 확인이 일치하지 않는다면
+        if(!userPwdDto.getNewPwd().equals(userPwdDto.getNewPwdConf())){
+            bindingResult.rejectValue("newPwdConf", "notSame.newPwd");
+            checkResult = true;
+        }
+
+        return checkResult;
     }
 
 }
