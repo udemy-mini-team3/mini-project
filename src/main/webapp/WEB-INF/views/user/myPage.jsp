@@ -12,13 +12,11 @@
             background-color: lightgray;
         }
     </style>
-
 </head>
 <body>
 
 <%@ include file="../common/nav.jsp"%>
-<div class="container">
-
+<div class="container w-50 p-3">
     <div class="py-5 text-center">
         <h2>마이 페이지</h2>
     </div>
@@ -56,7 +54,6 @@
             <p class="text-bg-info">비밀번호 변경 성공</p>
         </c:if>
 
-
         <hr class="my-4">
 
         <div class="row">
@@ -78,10 +75,6 @@
             location.href= "/user/delete";
         }
     }
-</script>
-
-
-
 </script>
 </body>
 </html>
