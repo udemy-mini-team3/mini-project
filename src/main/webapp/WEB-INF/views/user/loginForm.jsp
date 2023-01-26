@@ -15,7 +15,7 @@
 </head>
 <body>
 <%@ include file="../common/nav.jsp"%>
-<div class="container">
+<div class="container w-50 p-3">
     <div class="py-5 text-center">
         <h2>로그인</h2>
     </div>
