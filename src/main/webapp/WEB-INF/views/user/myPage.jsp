@@ -58,11 +58,11 @@
 
         <div class="row">
             <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">변경</button>
+                <button class="w-100 btn btn-primary btn-lg" type="submit">회원 정보 수정</button>
             </div>
             <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg" onclick="deleteUser(${userSeq});"
-                        type="button">탈퇴</button>
+                <button class="w-100 btn btn-danger btn-lg" onclick="deleteUser(${userSeq});"
+                        type="button">회원 탈퇴</button>
             </div>
         </div>
     </form:form>
