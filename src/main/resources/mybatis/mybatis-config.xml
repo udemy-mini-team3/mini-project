@@ -8,5 +8,6 @@
 	<typeAliases>
 		<typeAlias type="com.example.mini.dto.BoardDto" alias="boardDto"/>
 		<typeAlias type="com.example.mini.dto.CommentDto" alias="commentDto"/>
+		<typeAlias type="com.example.mini.dto.UserDto" alias="userDto"/>
 	</typeAliases>
 </configuration>

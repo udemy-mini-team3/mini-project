@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mini.dao.UserDao">
+    <select id="getUser" resultType="userDto" parameterType="String">
+        select * from user where email = #{a}
+    </select>
+
+    <insert id="insertUser" parameterType="userDto">
+        insert into user (email, pw, nickname, insert_date, update_date)
+        values(#{email}, #{pw}, #{nickname}, now(), now())
+    </insert>
+</mapper>
