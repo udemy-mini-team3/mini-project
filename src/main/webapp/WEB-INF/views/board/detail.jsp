@@ -12,13 +12,44 @@ $(document).ready(function(){
         location.href="delete?seq=" + ${board.boardSeq };
         alert("삭제가 완료되었습니다!");
     })
+
+    $("#btn-insert-comment").on('click', function() {
+        console.log("insert 작동");
+        $.ajax({
+            url: '/comment/insert',
+            type: 'post',
+            dataType: 'json',
+            data: {'boardSeq':${board.boardSeq }, 'writer':2, 'content':$("#content").val()},
+            success: function(data) {
+                $("#commentbox").html('');
+                for (var i = 0; i < data.length; i++) {
+                    $("#commentbox").append();
+                    $("#commentbox").append("<div class='col-8 md'>");
+                    $("#commentbox").append("<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + data[i].insertDate + "</span></p>");
+                    $("#commentbox").append("<p>" + data[i].content + "</p>");
+                    $("#commentbox").append("</div>");
+                    $("#commentbox").append("<div class='col-10 btn-right'>");
+                    $("#commentbox").append("<button type='button' class='btn btn-primary btn-sm' id='btn-modify-comment'>수정하기</button>");
+                    $("#commentbox").append("<button type='button' class='btn btn-primary btn-sm' id='btn-delete-comment'>삭제하기</button>");
+                    $("#commentbox").append("</div>");
+                    $("#commentbox").append("<hr>");
+                }},
+                error : function(request, status, error) {
+                    alert("code:"+request.status+"\n"
+                        +"message:"+request.responseText+"\n"
+                        +"error:"+error);
+                }
+
+        })
+    })
+
  });
 </script>
 <style>
 	.md {
 		margin:auto;
 	}
-	
+
 	.btn-right {
 		text-align: right;
 	}
@@ -27,6 +58,13 @@ $(document).ready(function(){
 <body>
 <div class="container">
 <%@ include file="../common/nav.jsp"%>
+    <c:if test="${board == null || board.isEmpty()}">
+        <script>
+            alert("잘못된 접근입니다.");
+            location.href="/";
+        </script>
+    </c:if>
+
 	<div class="row mt-5 md" id="box-detail">
 		<div class="col-8 mb-3 md">
 			<h3><b>${board.boardSeq }번째 글입니다.</b></h3>
@@ -35,26 +73,60 @@ $(document).ready(function(){
 			<p>${board.content }</p>
 		</div>
 		<div id="box-boardbtn" class="btn-right col-10">
-			<button type="button" class="btn btn-primary btn-sm" id="btn-modify-board">수정하기</button>		
+			<button type="button" class="btn btn-primary btn-sm" id="btn-modify-board">수정하기</button>
 			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
 		</div>
 	</div>
+
 	<br><br><hr><br><br>
-	<div class="row md mb-3">
-		<div class="col-8 md mb-5">
-			<textarea style="width:100%; text-align:center;" rows="3" placeholder="로그인 후 사용 가능합니다." readonly></textarea>
-			<textarea style="width:100%; text-align:center;" rows="3" placeholder="댓글 내용을 입력해주세요."></textarea>
-		</div>
-		<div id="box-boardbtn" class="btn-right col-10">
-			<button type="button" class="btn btn-primary btn-sm" id="btn-insert-comment" >등록하기</button>		
-			<button type="button" class="btn btn-primary btn-sm" id="btn-insert-comment" disabled>등록하기</button>		
-		</div>
+
+    <c:choose>
+        <c:when test="${empty loginid}">
+            <div class="row md mb-3">
+                <div class="col-8 md mb-5">
+                    <textarea style="width:100%; text-align:center;" rows="3" placeholder="로그인 후 사용 가능합니다." readonly></textarea>
+                </div>
+                <div class="btn-right col-10">
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-insert-comment" disabled>등록하기</button>
+                </div>
+            </div>
+        </c:when>
+        <c:otherwise>
+        	<div class="row md mb-3">
+        	    <form id="form-comment" method="post" action="<%=request.getContextPath() %>/comment/insert">
+        	    <input type="hidden" name="boardSeq" value="${board.boardSeq }">
+                    <div class="col-8 md mb-5">
+                        <textarea style="width:100%; text-align:center;" rows="3" name="content" id="content" placeholder="댓글 내용을 입력해주세요."></textarea>
+                        <input type="button" value="댓글 입력" class="btn btn-primary btn-sm" id="btn-insert-comment" >
+                    </div>
+        	    <form>
+        	</div>
+        </c:otherwise>
+    </c:choose>
+
+    <c:choose>
+        <c:when test="">
+        </c:when>
+        <c:otherwise>
+        </c:otherwise>
+    </c:choose>
+
+	<div id="box-comment-list">
+        <div class="row mb-5 md" id="commentbox" >
+        <c:forEach items="${commentList}" var="comment">
+            <div class="col-8 md" >
+                <p><span>${comment.nickname}</span>&nbsp;<span>${comment.insertDate}</span></p>
+                <p>${comment.content}</p>
+            </div>
+            <div class="col-10 btn-right">
+                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-comment"+${comment.writer}>수정하기</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-delete-comment"+${comment.writer}>삭제하기</button>
+            </div>
+		    <hr>
+        </c:forEach>
+        </div>
 	</div>
-	<div id="box-comment">
-		<div class="row mb-5 md" >
-		</div>
-		<hr>
-	</div>
+
 	<!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
       <div class="modal-dialog">
