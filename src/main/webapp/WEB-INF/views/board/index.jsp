@@ -1,54 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page session="false" %>
 <html>
 <head>
     <title>Home</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <%@ include file="../common/tag.jsp"%>
     <style>
         .b{
             border: solid 1px black;
         }
-
     </style>
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script>
+        function sort() {
+            console.log("hello")
+            $.ajax({
+                url : '/boardlist/sorted/' + $("#selectbox option:selected").val(),
+                type : 'get',
+                dataType : 'json',
+                success : function(data) { // 자바 배열 List == 자바스크립트 배열
+                    $("#ajaxtbody").html(''); // 빈값 할당
+                    for (var i = 0; i < data.length; i++) {
+                        $("#ajaxtbody").append("<tr><td>"+data[i].boardSeq+"</td><td>"+data[i].title+"</td><td>"+data[i].content+"</td><td>"+data[i].nickname+"</td><td>"+data[i].insertDate+"</td><td>"+data[i].viewcount+"</td></tr>");
+                    }
+                },
+                error : function(request, status, error) {
+                    alert("code:"+request.status+"\n"
+                        +"message:"+request.responseText+"\n"
+                        +"error:"+error);
+                }
+            }); // ajax
+        }
+        $(document).ready(function(){
+
+        });
+    </script>
 </head>
 <body>
 
-<%-- navbar --%>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="img/bae.jpg" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
-            배용남
-        </a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">질문답변<00/a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">정보공유</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">이벤트</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">로그인</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">회원가입</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<br>
-<br>
+<%@ include file="../common/nav.jsp"%>
 
 <div class="container">
     <div class="container text-center">
@@ -63,8 +53,8 @@
                 </div>
             </div>
             <div class="col">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>정렬</option>
+                <select class="form-select" aria-label="Default select example" onchange="sort()" id="selectbox">
+                    <option selected value="0">정렬</option>
                     <option value="1">최신순</option>
                     <option value="2">오래된순</option>
                     <option value="3">조회수</option>
@@ -90,9 +80,9 @@
             <th scope="col">조회수</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="ajaxtbody">
         <c:forEach items="${boardList }" var="board">
-        <tr onclick="location.href='getboard?seq=${board.boardSeq}'">
+        <tr onclick="location.href='getboard?seq=${board.boardSeq}'" id="ajaxtr">
             <th scope="row">${board.boardSeq}</th>
             <td>${board.title}</td>
             <td>${board.content}</td>

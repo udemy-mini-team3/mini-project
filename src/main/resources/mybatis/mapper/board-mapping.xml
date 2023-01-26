@@ -24,8 +24,20 @@
         order by boardSeq asc limit #{limit}, 5
     </select>
 
-   <!-- <select id="getBoardList" parameterType="int" resultType="boarddto">
-        select * from board order by insert_date asc limit #{limit}, 5
-    </select>-->
+    <select id="getReversedBoardList" resultMap="boardmap" parameterType="int">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by boardSeq desc limit #{limit}, 5
+    </select>
+
+    <select id="getBoard" resultMap="boardMap" parameterType="int">
+        SELECT u.seq as 'userSeq', u.nickname, b.seq as 'boardSeq', b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        WHERE b.seq = #{seq}
+    </select>
+
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM board WHERE seq = #{seq}
+    </delete>
 
 </mapper>

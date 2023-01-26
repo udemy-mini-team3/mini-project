@@ -25,4 +25,9 @@ public class BoardServiceImpl implements BoardService {
 
         return dao.getBoardList(limit);
     }
+
+    @Override
+    public List<Map<String, Object>> getReversedBoardList(int limit) {
+        return dao.getReversedBoardList(limit);
+    }
 }
