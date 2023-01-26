@@ -81,7 +81,7 @@ $(document).ready(function(){
 		</div>
 		<div id="box-boardbtn" class="btn-right col-10">
 			<button type="button" class="btn btn-primary btn-sm" id="btn-modify-board">수정하기</button>
-			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
+			<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
 		</div>
 	</div>
 
@@ -102,9 +102,9 @@ $(document).ready(function(){
         	<div class="row md mb-3">
         	    <form id="form-comment" method="post" action="<%=request.getContextPath() %>/comment/insert">
         	    <input type="hidden" name="boardSeq" value="${board.boardSeq }">
-                    <div class="col-8 md mb-5">
+                    <div class="col-8 md mb-5 btn-right">
                         <textarea style="width:100%; text-align:center;" rows="3" name="content" id="content" placeholder="댓글 내용을 입력해주세요."></textarea>
-                        <input type="button" value="댓글 입력" class="btn btn-primary btn-sm" id="btn-insert-comment" >
+                        <input type="button" value="댓글 입력" class="btn btn-primary btn-sm " id="btn-insert-comment" >
                     </div>
         	    <form>
         	</div>
@@ -127,7 +127,7 @@ $(document).ready(function(){
             </div>
             <div class="col-10 btn-right">
                 <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
-                <button type="button" class="btn btn-primary btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
+                <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
             </div>
 		    <hr>
         </c:forEach>

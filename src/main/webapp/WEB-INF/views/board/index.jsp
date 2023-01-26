@@ -21,6 +21,7 @@
                     for (var i = 0; i < data.length; i++) {
                         $("#ajaxtbody").append("<tr><td>"+data[i].boardSeq+"</td><td>"+data[i].title+"</td><td>"+data[i].content+"</td><td>"+data[i].nickname+"</td><td>"+data[i].insertDate+"</td><td>"+data[i].viewcount+"</td></tr>");
                     }
+                    $("#buttons").html('');
                 },
                 error : function(request, status, error) {
                     alert("code:"+request.status+"\n"
@@ -39,7 +40,7 @@
 <%@ include file="../common/nav.jsp"%>
 
 <div class="container">
-    <div class="container text-center">
+    <div class="container text-center py-3">
         <div class="row">
             <div class="col">
                 <button type="button" class="btn btn-outline-secondary" onclick="location.href='writeboard'">글 작성</button>
@@ -52,7 +53,7 @@
             </div>
             <div class="col">
                 <select class="form-select" aria-label="Default select example" onchange="sort()" id="selectbox">
-                    <option selected value="0">정렬</option>
+                    <option selected disabled value="0">정렬</option>
                     <option value="1">최신순</option>
                     <option value="2">오래된순</option>
                     <option value="3">조회수</option>
@@ -85,9 +86,9 @@
             <td>${board.title}</td>
             <td>${board.content}</td>
             <td>${board.nickname}</td>
-            <td>${board.insertDate}</td>
-            <%--<fmt:parseDate value="${board.insertDate}" var="convertedDate" pattern="yyyy-MM-dd HH:mm:ss"/>
-            <td><fmt:formatDate value="${convertedDate}" pattern="yyyy-MM-dd"/></td>--%>
+            <%--<td>${board.insertDate}</td>--%>
+            <fmt:parseDate value="${board.insertDate}" var="convertedDate" pattern="yyyy-MM-dd HH:mm:ss"/>
+            <td><fmt:formatDate value="${convertedDate}" pattern="yyyy-MM-dd"/></td>
             <td>${board.viewcount}</td>
         </tr>
         </c:forEach>
@@ -102,7 +103,7 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-2">
         </div>
-        <div class="col-md-auto">
+        <div class="col-md-auto" id="buttons">
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group me-2" role="group" aria-label="First group">
                     <% int pageCount = (Integer)request.getAttribute("pageCount");
