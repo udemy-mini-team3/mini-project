@@ -32,10 +32,10 @@ public class BoardController {
       return mv;
   }
 
-  @GetMapping("/boardList")
-  public ModelAndView boardList(int pageNum) {
+  @GetMapping("/boardlist")
+  public ModelAndView boardList(int page) {
       ModelAndView mv = new ModelAndView();
-      int limit = (pageNum - 1) * 5 ;
+      int limit = (page - 1) * 5 ;
       List<Map<String, Object>> boardList = service.getBoardList(limit);
       int boardCount = service.getBoardCount();
       int pageCount = (boardCount / 5) + 1;
@@ -48,12 +48,12 @@ public class BoardController {
 
   }
 
-  @GetMapping("/writeBoard")
+  @GetMapping("/writeboard")
   public String writeBoard() {
       return "sample";
   }
 
-    @GetMapping("/getBoard")
+    @GetMapping("/getboard")
     public String getBoard() {
         return "sample";
     }

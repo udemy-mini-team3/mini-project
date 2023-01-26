@@ -26,7 +26,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">질문답변</a>
+                    <a class="nav-link active" aria-current="page" href="#">질문답변<00/a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="#">정보공유</a>
@@ -54,7 +54,7 @@
     <div class="container text-center">
         <div class="row">
             <div class="col">
-                <button type="button" class="btn btn-outline-secondary" onclick="location.href='writeBoard'">글 작성</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="location.href='writeboard'">글 작성</button>
             </div>
             <div class="col-6">
                 <div class="input-group mb-3">
@@ -92,7 +92,7 @@
         </thead>
         <tbody>
         <c:forEach items="${boardList }" var="board">
-        <tr onclick="location.href='getBoard?seq=${board.boardSeq}'">
+        <tr onclick="location.href='getboard?seq=${board.boardSeq}'">
             <th scope="row">${board.boardSeq}</th>
             <td>${board.title}</td>
             <td>${board.content}</td>
@@ -120,7 +120,7 @@
                     <% int pageCount = (Integer)request.getAttribute("pageCount");
                         for (int i = 1; i <= pageCount; i++) {
                     %>
-                        <button type="button" class="btn btn-primary" onclick="location.href='boardList?pageNum=<%=i%>'"><%=i%></button>
+                        <button type="button" class="btn btn-primary" onclick="location.href='boardlist?page=<%=i%>'"><%=i%></button>
                     <%
                         }
                     %>
