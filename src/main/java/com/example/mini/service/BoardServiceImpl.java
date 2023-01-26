@@ -13,7 +13,7 @@ public class BoardServiceImpl implements BoardService {
     BoardDao dao;
 
     @Override
-    public Map<String, String> getBoard(int seq) {
+    public Map<String, Object> getBoard(int seq) {
         return dao.getBoard(seq);
     }
 

@@ -32,8 +32,8 @@ public class BoardController {
     public ModelAndView board(@RequestParam(value="seq", required=true) int seq) {
         ModelAndView mv= new ModelAndView();
         String loginid = "bb@gmail.com";
-        Map<String, String> board = service.getBoard(seq);
-        List<HashMap<String, String>> commentList = commentService.getCommentList(seq);
+        Map<String, Object> board = service.getBoard(seq);
+        List<Map<String, Object>> commentList = commentService.getCommentList(seq);
 
         mv.addObject("board", board);
         mv.addObject("commentList", commentList);
@@ -47,6 +47,7 @@ public class BoardController {
         service.deleteBoard(seq);
         return "redirect:/";
     }
+
 
 
 }

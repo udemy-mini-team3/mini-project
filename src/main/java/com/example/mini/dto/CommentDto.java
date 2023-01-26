@@ -14,6 +14,8 @@ public class CommentDto {
 	
 	public CommentDto() {}
 
+
+
 	public int getSeq() {
 		return seq;
 	}

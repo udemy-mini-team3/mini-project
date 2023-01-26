@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.mini.dao.CommentDao">
 
-    <resultMap type="HashMap" id="commentMap">
+    <resultMap type="HashMap" id="commentmap">
         <result property="boardSeq" column="boardSeq"/>
         <result property="commentSeq" column="commentSeq"/>
         <result property="writer" column="writer"/>
@@ -14,11 +14,16 @@
         <result property="nickname" column="nickname"/>
     </resultMap>
 
-    <select id="getCommentList" resultMap="commentMap" parameterType="int">
+    <select id="getCommentList" resultMap="commentmap" parameterType="int">
         SELECT b.seq AS boardSeq, c.seq AS commentSeq, c.writer, c.content, c.insert_date, u.seq AS userSeq, u.nickname
         FROM comment c JOIN board b ON c.board_seq = b.seq
         JOIN user u ON c.writer = u.seq
         WHERE b.seq = #{seq}
     </select>
+
+    <insert id="insertComment" parameterType="commentDto">
+        INSERT INTO comment (board_seq, writer, content, insert_date)
+        VALUES (#{boardSeq}, #{writer}, #{content}, NOW())
+    </insert>
 
 </mapper>

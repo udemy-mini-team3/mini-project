@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface BoardService {
 
-    Map<String,String> getBoard(int seq);
+    Map<String,Object> getBoard(int seq);
     void deleteBoard(int seq);
 }

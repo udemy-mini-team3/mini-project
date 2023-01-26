@@ -10,7 +10,7 @@ import java.util.Map;
 public interface BoardDao {
 
     // getBoard
-    Map<String, String> getBoard(int seq);
+    Map<String, Object> getBoard(int seq);
 
     // getBoardList
     // updateBoard
