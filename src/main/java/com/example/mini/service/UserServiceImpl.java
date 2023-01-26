@@ -36,4 +36,14 @@ public class UserServiceImpl implements UserService {
     public void delete(String email) {
         dao.delete(email);
     }
+
+    @Override
+    public String getPwdBySeq(int seq) {
+        return dao.getPwdBySeq(seq);
+    }
+
+    @Override
+    public void updatePw(int seq, String newPwd) {
+        dao.updatePw(seq, newPwd);
+    }
 }

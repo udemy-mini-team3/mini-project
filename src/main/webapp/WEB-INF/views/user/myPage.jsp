@@ -46,7 +46,7 @@
         </div>
         <br>
         <div>
-            <a href="/${userSeq}/change">비밀번호 변경</a>
+            <a href="/pwChange">비밀번호 변경</a>
         </div>
 
         <c:if test="${result eq 'success'}">

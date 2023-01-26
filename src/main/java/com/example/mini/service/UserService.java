@@ -12,5 +12,7 @@ public interface UserService {
 
     void delete(String email);
 
+    String getPwdBySeq(int seq);
 
+    void updatePw(int seq, String newPwd);
 }
