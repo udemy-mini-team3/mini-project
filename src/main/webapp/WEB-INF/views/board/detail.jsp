@@ -16,6 +16,12 @@ $(document).ready(function(){
 
     $("#btn-insert-comment").on('click', function() {
         console.log("insert 작동");
+
+        if($("#content").val().trim() == "") {
+            alert("내용을 입력해주세요!");
+            return;
+        }
+
         $.ajax({
             url: '/comment/insert',
             type: 'post',
@@ -24,16 +30,16 @@ $(document).ready(function(){
             success: function(data) {
                 $("#commentbox").html('');
                 for (var i = 0; i < data.length; i++) {
-                    $("#commentbox").append();
-                    $("#commentbox").append("<div class='col-8 md'>");
-                    $("#commentbox").append("<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + data[i].insertDate + "</span></p>");
-                    $("#commentbox").append("<p>" + data[i].content + "</p>");
-                    $("#commentbox").append("</div>");
-                    $("#commentbox").append("<div class='col-10 btn-right'>");
-                    $("#commentbox").append("<button type='button' class='btn btn-primary btn-sm' id='btn-modify-comment'>수정하기</button>");
-                    $("#commentbox").append("<button type='button' class='btn btn-primary btn-sm' id='btn-delete-comment'>삭제하기</button>");
-                    $("#commentbox").append("</div>");
-                    $("#commentbox").append("<hr>");
+                    $("#commentbox").append("<div class='row'><div class='col-2'></div>"
+                    + "<div class='col-8 '>"
+                    + "<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + data[i].insertDate + "</span></p>"
+                    + "<p>" + data[i].content + "</p>"
+                    + "</div>"
+                    + "<div class='col-8 btn-right'>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-" + data[i].commentSeq +"'>수정하기</button>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-delete-" + data[i].commentSeq +"'>삭제하기</button></div>"
+                    + "</div>"
+                    + "<hr>");
                 }},
                 error : function(request, status, error) {
                     alert("code:"+request.status+"\n"
@@ -120,8 +126,8 @@ $(document).ready(function(){
                 <p>${comment.content}</p>
             </div>
             <div class="col-10 btn-right">
-                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-comment"+${comment.writer}>수정하기</button>
-                <button type="button" class="btn btn-primary btn-sm" id="btn-delete-comment"+${comment.writer}>삭제하기</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-delete-${comment.commentSeq}" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">삭제하기</button>
             </div>
 		    <hr>
         </c:forEach>
@@ -129,6 +135,24 @@ $(document).ready(function(){
 	</div>
 
 	<!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+          </div>
+          <div class="modal-body" style="text-align: center">
+            <h4><strong>정말 삭제하시겠습니까?</strong><h4>
+            <p class="fs-5 mb-5">삭제 후 복구는 불가합니다.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn btn-primary" id="btn-delete-board">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Comment delete modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">

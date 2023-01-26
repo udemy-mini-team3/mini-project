@@ -21,9 +21,24 @@
         WHERE b.seq = #{seq}
     </select>
 
+    <select id="getComment" resultType="CommentDto" parameterType="int">
+        SELECT *
+        FROM comment
+        WHERE seq = #{seq}
+    </select>
+
     <insert id="insertComment" parameterType="commentDto">
         INSERT INTO comment (board_seq, writer, content, insert_date)
         VALUES (#{boardSeq}, #{writer}, #{content}, NOW())
     </insert>
 
+    <update id="updateComment" parameterType="commentDto">
+        update comment set content =#{content}, update_date=now()
+        where seq = #{seq}
+    </update>
+
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM comment
+        WHERE seq = #{seq};
+    </delete>
 </mapper>

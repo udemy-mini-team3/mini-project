@@ -5,10 +5,7 @@ import com.example.mini.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -22,23 +19,6 @@ public class CommentController {
     @Qualifier("commentService")
     CommentService commentService;
 
-    /*
-    @PostMapping("/comment/insert")
-    public void insertComment(CommentDto dto) {
-        dto.setWriter(2);
-        commentService.insertComment(dto);
-    }
-*/
-    /*
-    @ResponseBody
-    @PostMapping(value="/comment/list", produces={"application/json;charset=utf-8"})
-    public List<Map<String, String>> getCommentList(@RequestParam(value="seq", required=true) int seq) {
-        List<Map<String, String>> commentList = commentService.getCommentList(seq);
-        commentService.insertComment(dto);
-        return commentList;
-    }
-     */
-
     @ResponseBody
     @PostMapping(value="/comment/insert", produces={"application/json;charset=utf-8"})
     public List<Map<String, Object>> getCommentList(CommentDto dto) {
@@ -47,11 +27,29 @@ public class CommentController {
         List<Map<String, Object>> commentList = commentService.getCommentList(dto.getBoardSeq());
         return commentList;
     }
-
-
-
     // update
+    @GetMapping("/comment/update/{seq}")
+    public ModelAndView updateComment(@PathVariable("seq") int seq) {
+        ModelAndView mv = new ModelAndView();
+        CommentDto dto = commentService.getComment(seq);
+        mv.addObject("dto", dto);
+        mv.setViewName("board/commentform");
+        return mv;
 
-
+    }
+    @PostMapping("/comment/update")
+    public String updateComment(CommentDto dto) {
+        commentService.updateComment(dto);
+        return "redirect:/board/detail?seq="+dto.getBoardSeq();
+    }
+    public String redirect() {
+        return "redirect:/";
+    }
     // delete
+
+    @GetMapping("/comment/delete/{seq}")
+    public String deleteComment(@PathVariable("seq") int seq) {
+        commentService.deleteComment(seq);
+        return "redirect:/";
+    }
 }
