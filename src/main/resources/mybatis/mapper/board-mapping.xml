@@ -52,4 +52,13 @@
         DELETE FROM board WHERE seq = #{seq}
     </delete>
 
+    <insert id="insertBoard" parameterType="boardDto">
+        insert into board (writer, title, content, insert_date, viewcount)
+        values(#{writer}, #{title}, #{content},now(),0)
+    </insert>
+
+    <update id="updateBoard" parameterType="boardDto">
+        update board set title=#{title}, content=#{content} where seq=#{seq}
+    </update>
+
 </mapper>

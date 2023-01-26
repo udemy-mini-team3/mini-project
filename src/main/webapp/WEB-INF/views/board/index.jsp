@@ -43,7 +43,7 @@
     <div class="container text-center py-3">
         <div class="row">
             <div class="col">
-                <button type="button" class="btn btn-outline-secondary" onclick="location.href='writeboard'">글 작성</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="location.href='insertboard'">글 작성</button>
             </div>
             <div class="col-6">
                 <div class="input-group mb-3">
