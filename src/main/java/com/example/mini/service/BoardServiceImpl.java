@@ -36,7 +36,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Map<String, Object>> getReversedBoardList(int limit) {
-        return dao.getReversedBoardList(limit);
+    public List<Map<String, Object>> getRecentBoards() {
+        return dao.getRecentBoards();
+    }
+
+    @Override
+    public List<Map<String, Object>> getPastBoards() {
+        return dao.getPastBoards();
+    }
+
+    @Override
+    public List<Map<String, Object>> getFamousBoards() {
+        return dao.getFamousBoards();
     }
 }

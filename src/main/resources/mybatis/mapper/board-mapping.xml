@@ -24,10 +24,22 @@
         order by boardSeq asc limit #{limit}, 5
     </select>
 
-    <select id="getReversedBoardList" resultMap="boardMap" parameterType="int">
+    <select id="getRecentBoards" resultMap="boardMap">
         SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
         FROM board b JOIN user u ON b.writer = u.seq
-        order by boardSeq desc limit #{limit}, 5
+        order by boardSeq asc
+    </select>
+
+    <select id="getPastBoards" resultMap="boardMap">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by boardSeq desc
+    </select>
+
+    <select id="getFamousBoards" resultMap="boardMap">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by viewcount desc
     </select>
 
     <select id="getBoard" resultMap="boardMap" parameterType="int">
