@@ -16,11 +16,10 @@
 <body>
 
 <%@ include file="../common/nav.jsp"%>
-<div class="container w-50 p-3">
-    <div class="py-5 text-center">
+<div class="container w-50 p-1">
+    <div class="py-3 text-center">
         <h2>마이 페이지</h2>
     </div>
-
     <form:form action="" method="post" modelAttribute="userDto">
 
         <div>
@@ -58,11 +57,11 @@
 
         <div class="row">
             <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">변경</button>
+                <button class="w-100 btn btn-primary btn-lg" type="submit">회원 정보 수정</button>
             </div>
             <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg" onclick="deleteUser(${userSeq});"
-                        type="button">탈퇴</button>
+                <button class="w-100 btn btn-danger btn-lg" onclick="deleteUser(${userSeq});"
+                        type="button">회원 탈퇴</button>
             </div>
         </div>
     </form:form>

@@ -21,8 +21,8 @@
 </head>
 <body>
 <%@ include file="../common/nav.jsp"%>
-<div class="container w-50 p-3">
-    <div class="py-5 text-center">
+<div class="container w-50 p-1">
+    <div class="py-3 text-center">
         <h2>회원 가입</h2>
     </div>
     <h4 class="mb-3">회원 정보 입력</h4>
