@@ -37,10 +37,11 @@
 
         <input type="hidden" name="seq" value="${board.boardSeq}">
 
+        <br>
         <%-- buttons --%>
         <div class="container text-center">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-primary btn-lg" type="button" style="margin-right: 2px " onclick="location.href='/'">취소</button>
+                <button class="btn btn-secondary btn-lg" type="button" style="margin-right: 2px " onclick="location.href='/'">취소</button>
                 <button class="btn btn-primary btn-lg" type="submit">수정</button>
             </div>
         </div>
