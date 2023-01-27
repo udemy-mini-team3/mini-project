@@ -19,7 +19,7 @@
                 success : function(data) { // 자바 배열 List == 자바스크립트 배열
                     $("#ajaxtbody").html(''); // 빈값 할당
                     for (var i = 0; i < data.length; i++) {
-                        $("#ajaxtbody").append("<tr><td>"+data[i].boardSeq+"</td><td>"+data[i].title+"</td><td>"+data[i].content+"</td><td>"+data[i].nickname+"</td><td>"+data[i].insertDate+"</td><td>"+data[i].viewcount+"</td></tr>");
+                        $("#ajaxtbody").append("<tr onclick=\"location.href='board/detail?seq="+data[i].boardSeq+"'\"><td>"+data[i].boardSeq+"</td><td>"+data[i].title+"</td><td>"+data[i].content+"</td><td>"+data[i].nickname+"</td><td>"+data[i].insertDate+"</td><td>"+data[i].viewcount+"</td></>");
                     }
                     $("#buttons").html('');
                 },
@@ -43,7 +43,7 @@
     <div class="container text-center py-3">
         <div class="row">
             <div class="col">
-                <button type="button" class="btn btn-outline-secondary" onclick="location.href='writeboard'">글 작성</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="location.href='insertboard'">글 작성</button>
             </div>
             <div class="col-6">
                 <div class="input-group mb-3">

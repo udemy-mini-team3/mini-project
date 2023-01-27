@@ -80,7 +80,7 @@ $(document).ready(function(){
 			<p>${board.content }</p>
 		</div>
 		<div id="box-boardbtn" class="btn-right col-10">
-			<button type="button" class="btn btn-primary btn-sm" id="btn-modify-board">수정하기</button>
+			<button type="button" class="btn btn-primary btn-sm" id="btn-modify-board" onclick="location.href='updateboard/${board.boardSeq}'">수정하기</button>
 			<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
 		</div>
 	</div>

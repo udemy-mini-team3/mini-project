@@ -1,14 +1,12 @@
 package com.example.mini.controller;
 
+import com.example.mini.dto.BoardDto;
 import com.example.mini.service.BoardService;
 import com.example.mini.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -86,14 +84,35 @@ public class BoardController {
         return boardList;
     }
 
-    @GetMapping("/writeboard")
-    public String writeBoard() {
-        return "board/sample";
+    @GetMapping("/insertboard")
+    public String insertBoard() {
+        return "board/insertBoard";
     }
 
-    @GetMapping("/getboard")
-    public String getBoard() {
-        return "board/sample";
+    @PostMapping("/insertboard")
+    public ModelAndView insertBoard(BoardDto dto){
+        ModelAndView mv = new ModelAndView();
+        service.insertBoard(dto);
+        mv.setViewName("redirect:/");
+        return mv;
     }
+    @GetMapping("/board/updateboard/{seq}")
+    public ModelAndView updateBoard(@PathVariable("seq") int seq) {
+        ModelAndView mv = new ModelAndView();
+        Map<String, Object> board = service.getBoard(seq);
+        mv.addObject("board", board);
+        mv.setViewName("board/updateBoard");
+        return mv;
+    }
+
+    @PostMapping("/board/updateboard")
+    public ModelAndView updateBoard(BoardDto dto){
+        ModelAndView mv = new ModelAndView();
+        System.out.println(dto);
+        service.updateBoard(dto);
+        mv.setViewName("redirect:/");
+        return mv;
+    }
+
 
 }
