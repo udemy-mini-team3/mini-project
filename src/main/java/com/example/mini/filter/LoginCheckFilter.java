@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LoginCheckFilter implements Filter {
-    private static final String[] whitelist = {"/", "/boardlist", "/board/detail", "/register", "/login", "/logout", "/css/*", "/img/*"};
+    private static final String[] whitelist = {"/", "/boardlist", "/board/detail", "/register", "/login", "/logout", "/css/*", "/img/*", "js/*"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
