@@ -6,6 +6,7 @@
 <%@ include file="../common/tag.jsp"%>
 <title>Insert title here</title>
 <script src="<%=request.getContextPath()%>/js/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script>
 $(document).ready(function(){
     $("#btn-delete-board").on('click', function() {
@@ -13,7 +14,6 @@ $(document).ready(function(){
         alert("삭제가 완료되었습니다!");
     })
 
-console.log(${isWriter});
     $("#btn-insert-comment").on('click', function() {
         console.log("insert 작동");
 
@@ -21,7 +21,6 @@ console.log(${isWriter});
             alert("내용을 입력해주세요!");
             return;
         }
-
         $.ajax({
             url: '/comment/insert',
             type: 'post',
@@ -30,14 +29,14 @@ console.log(${isWriter});
             success: function(data) {
                 $("#commentbox").html('');
                 for (var i = 0; i < data.length; i++) {
-                    $("#commentbox").append("<div class='row'><div class='col-2'></div>"
+                    $("#commentbox").append("<div class='row'><div class='col-3'></div>"
                     + "<div class='col-8 '>"
-                    + "<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + data[i].insertDate + "</span></p>"
+                    + "<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + moment(data[i].insertDate).format("YYYY-MM-DD HH:mm:ss") + "</span></p>"
                     + "<p>" + data[i].content + "</p>"
                     + "</div>"
-                    + "<div class='col-8 btn-right'>"
+                    + "<div class='col-10 btn-right'>"
                     + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-${comment.commentSeq}' onclick='location.href='/comment/update/${comment.commentSeq}''>수정하기</button>"
-                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-delete-${comment.commentSeq}' onclick='location.href='/comment/delete/${comment.commentSeq}''>삭제하기</button></div>"
+                    + "<button type='button' class='btn btn-danger btn-sm' id='btn-delete-${comment.commentSeq}' onclick='location.href='/comment/delete/${comment.commentSeq}''>삭제하기</button></div>"
                     + "</div>"
                     + "<hr>");
                 }},
@@ -65,7 +64,7 @@ console.log(${isWriter});
 <body>
 <div class="container">
 <%@ include file="../common/nav.jsp"%>
-    <c:if test="${board == null || board.isEmpty()}">
+    <c:if test="${board eq null || board.isEmpty()}">
         <script>
             alert("잘못된 접근입니다.");
             location.href="/";
@@ -92,7 +91,7 @@ console.log(${isWriter});
         <c:when test="${empty userDto}">
             <div class="row md mb-3">
                 <div class="col-8 md mb-5">
-                    <textarea style="width:100%; text-align:center;" rows="3" placeholder="로그인 후 사용 가능합니다." readonly></textarea>
+                    <textarea style="width:100%; text-align:center;" rows="3" placeholder="댓글 기능은 로그인 후 사용 가능합니다." readonly></textarea>
                 </div>
             </div>
         </c:when>
@@ -118,19 +117,30 @@ console.log(${isWriter});
 
 	<div id="box-comment-list">
         <div class="row mb-5 md" id="commentbox" >
-        <c:forEach items="${commentList}" var="comment">
-            <div class="col-8 md" >
-                <p><span>${comment.nickname}</span>&nbsp;<span>${comment.insertDate}</span></p>
-                <p>${comment.content}</p>
-            </div>
-            <c:if test="${userDto.seq == comment.writer}">
-                <div class="col-10 btn-right">
-                    <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
+        <c:choose>
+            <c:when test="${empty commentList}">
+                <div class="col-8 md" text-align="center">
+                    <p>댓글이 없습니다.</p>
+                    <p>첫번째 답변자가 되어주세요!</p>
                 </div>
-		    </c:if>
-		    <hr>
-        </c:forEach>
+            </c:when>
+            <c:otherwise>
+            <span class="col-8 md">총 ${commentList.size()} 개의 댓글</span><br><br>
+                <c:forEach items="${commentList}" var="comment">
+                    <div class="col-8 md" >
+                        <p><span>${comment.nickname}</span>&nbsp;<span>${comment.insertDate}</span></p>
+                        <p>${comment.content}</p>
+                    </div>
+                    <c:if test="${userDto.seq == comment.writer}">
+                        <div class="col-10 btn-right">
+                            <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
+                            <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
+                        </div>
+                    </c:if>
+                    <hr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
         </div>
 	</div>
 
