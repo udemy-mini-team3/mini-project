@@ -108,13 +108,6 @@ $(document).ready(function(){
         </c:otherwise>
     </c:choose>
 
-    <c:choose>
-        <c:when test="">
-        </c:when>
-        <c:otherwise>
-        </c:otherwise>
-    </c:choose>
-
 	<div id="box-comment-list">
         <div class="row mb-5 md" id="commentbox" >
         <c:choose>
