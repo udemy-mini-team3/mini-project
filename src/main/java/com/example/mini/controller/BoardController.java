@@ -96,18 +96,23 @@ public class BoardController {
         mv.setViewName("redirect:/");
         return mv;
     }
-
-    @GetMapping("/updateboard")
-    public String updateBoard(@RequestParam("seq") int seq) {
-        return "board/updateBoard";
+    @GetMapping("/board/updateboard/{seq}")
+    public ModelAndView updateBoard(@PathVariable("seq") int seq) {
+        ModelAndView mv = new ModelAndView();
+        Map<String, Object> board = service.getBoard(seq);
+        mv.addObject("board", board);
+        mv.setViewName("board/updateBoard");
+        return mv;
     }
 
-    @PostMapping("/updateboard")
+    @PostMapping("/board/updateboard")
     public ModelAndView updateBoard(BoardDto dto){
         ModelAndView mv = new ModelAndView();
+        System.out.println(dto);
         service.updateBoard(dto);
         mv.setViewName("redirect:/");
         return mv;
     }
+
 
 }
