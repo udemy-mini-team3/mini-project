@@ -8,6 +8,23 @@
 <html>
 <head>
     <title>Home</title>
+    <script src="<%=request.getContextPath()%>/js/jquery-3.6.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#insertBtn").on('click', function(e) {
+
+                if($("#content").val().trim() == ""||$("#title").val().trim() == "") {
+                    alert("내용을 입력해주세요!");
+                    e.preventDefault();
+                } else {
+                    alert("등록 완료되었습니다!");
+                }
+
+            })
+
+
+        });
+    </script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
         .b{
@@ -32,11 +49,11 @@
 
     <form action="insertboard" method="post">
         <div class="form-group">
-            <input type="text" name="title" class="form-control" placeholder="제목을 입력해주세요.">
+            <input id="title" type="text" name="title" class="form-control" placeholder="제목을 입력해주세요.">
         </div>
         <br>
         <div class="form-group">
-            <textarea name="content" class="form-control" rows="10" placeholder="내용을 입력해주세요."></textarea>
+            <textarea id="content" name="content" class="form-control" rows="10" placeholder="내용을 입력해주세요."></textarea>
         </div>
         <input class="form-group" type="hidden" name="writer" value=<%=((UserDto) session.getAttribute(SessionConst.LOGIN_USER)).getSeq()%>>
 
@@ -45,8 +62,8 @@
         <%-- buttons --%>
         <div class="container text-center">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-primary btn-lg" type="button" style="margin-right: 2px" onclick="location.href='/'">취소</button>
-                <button class="btn btn-primary btn-lg" type="submit" >등록</button>
+                <button class="btn btn-secondary btn-lg" type="button" style="margin-right: 2px" onclick="location.href='/'">취소</button>
+                <button class="btn btn-primary btn-lg" type="submit" id="insertBtn">등록</button>
             </div>
         </div>
     </form>

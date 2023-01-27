@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getEmailCount(String email) {
-        return dao.getEmailCount(email);
+    public int getNicknameCount(String nickname) {
+        return dao.getNicknameCount(nickname);
     }
 
 
@@ -45,5 +45,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePw(int seq, String newPwd) {
         dao.updatePw(seq, newPwd);
+    }
+
+    @Override
+    public boolean checkUserEmail(String email) {
+        if(dao.checkUserEmail(email) == 0) return false;
+        return true;
     }
 }

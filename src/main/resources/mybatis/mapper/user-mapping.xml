@@ -19,10 +19,10 @@
         where email = #{email}
     </update>
 
-    <select id="getEmailCount" resultType="int">
+    <select id="getNicknameCount" resultType="int">
         select count(*)
         from user
-        where email= #{email}
+        where nickname= #{nickname}
     </select>
 
 
@@ -42,5 +42,11 @@
         select pw
         from user
         where seq = #{seq}
+    </select>
+
+    <select id="checkUserEmail" resultType="int">
+        select count(*)
+        from user
+        where email=#{email}
     </select>
 </mapper>

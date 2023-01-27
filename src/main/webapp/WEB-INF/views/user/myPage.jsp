@@ -24,7 +24,7 @@
 
         <div>
             <label for="email">이메일</label>
-            <input type="text" id="email" name="email" class="form-control" value="${userDto.email}">
+            <input type="text" id="email" name="email" class="form-control" value="${userDto.email}" readonly>
             <form:errors path="email" cssClass="text-danger"/>
         </div>
 
