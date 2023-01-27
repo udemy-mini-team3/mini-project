@@ -1,14 +1,17 @@
 package com.example.mini.controller;
 
+import com.example.mini.dto.UserDto;
 import com.example.mini.dto.BoardDto;
 import com.example.mini.service.BoardService;
 import com.example.mini.service.CommentService;
+import com.example.mini.util.SessionConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +28,23 @@ public class BoardController {
     CommentService commentService;
 
     @GetMapping("/board/detail")
-    public ModelAndView board(@RequestParam(value="seq", required=true) int seq) {
+    public ModelAndView board(@RequestParam(value="seq", required=true) int seq, HttpSession session) {
         ModelAndView mv= new ModelAndView();
-        String loginid = "bb@gmail.com";
+        boolean isWriter = false;
+        UserDto userDto = (UserDto) session.getAttribute(SessionConst.LOGIN_USER);
         Map<String, Object> board = service.getBoard(seq);
         List<Map<String, Object>> commentList = commentService.getCommentList(seq);
 
+        if (userDto == null) {
+            isWriter = false;
+        } else if (board.get("userSeq").equals(userDto.getSeq())) {
+            isWriter = true;
+        }
+
         mv.addObject("board", board);
         mv.addObject("commentList", commentList);
-        mv.addObject("loginid", loginid);
+        mv.addObject("userDto", userDto);
+        mv.addObject("isWriter", isWriter);
         mv.setViewName("board/detail");
         return mv;
     }

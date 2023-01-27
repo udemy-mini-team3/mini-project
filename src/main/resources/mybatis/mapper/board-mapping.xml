@@ -52,6 +52,10 @@
         DELETE FROM board WHERE seq = #{seq}
     </delete>
 
+    <update id="updateViewcount" parameterType="int">
+        update board set viewcount = viewcount+1 where seq = #{seq};
+    </update>
+
     <insert id="insertBoard" parameterType="boardDto">
         insert into board (writer, title, content, insert_date, viewcount)
         values(#{writer}, #{title}, #{content},now(),0)

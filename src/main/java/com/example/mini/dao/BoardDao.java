@@ -24,6 +24,8 @@ public interface BoardDao {
     // deleteBoard
     void deleteBoard(int seq);
 
+    // insertBoard
+	void updateViewcount(int seq);
 	void updateBoard(BoardDto dto);
 	void insertBoard(BoardDto dto);
 

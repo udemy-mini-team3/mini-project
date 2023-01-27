@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +6,7 @@
 <%@ include file="../common/tag.jsp"%>
 <title>Insert title here</title>
 <script src="<%=request.getContextPath()%>/js/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script>
 $(document).ready(function(){
     $("#btn-delete-board").on('click', function() {
@@ -21,23 +21,22 @@ $(document).ready(function(){
             alert("내용을 입력해주세요!");
             return;
         }
-
         $.ajax({
             url: '/comment/insert',
             type: 'post',
             dataType: 'json',
-            data: {'boardSeq':${board.boardSeq }, 'writer':2, 'content':$("#content").val()},
+            data: {'boardSeq':${board.boardSeq }, 'writer':${userDto.seq }, 'content':$("#content").val()},
             success: function(data) {
                 $("#commentbox").html('');
                 for (var i = 0; i < data.length; i++) {
-                    $("#commentbox").append("<div class='row'><div class='col-2'></div>"
+                    $("#commentbox").append("<div class='row'><div class='col-3'></div>"
                     + "<div class='col-8 '>"
-                    + "<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + data[i].insertDate + "</span></p>"
+                    + "<p><span>" + data[i].nickname + "</span>&nbsp;<span>" + moment(data[i].insertDate).format("YYYY-MM-DD HH:mm:ss") + "</span></p>"
                     + "<p>" + data[i].content + "</p>"
                     + "</div>"
-                    + "<div class='col-8 btn-right'>"
-                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-" + data[i].commentSeq +"'>수정하기</button>"
-                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-delete-" + data[i].commentSeq +"'>삭제하기</button></div>"
+                    + "<div class='col-10 btn-right'>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-"+data[i].commentSeq+"' onclick='location.href='\/comment\/update\/"+data[i].commentSeq+"''>수정하기</button>"
+                    + "<button type='button' class='btn btn-danger btn-sm' id='btn-delete-"+data[i].commentSeq+"' onclick='location.href='\/comment\/delete\/"+data[i].commentSeq+"''>삭제하기</button></div>"
                     + "</div>"
                     + "<hr>");
                 }},
@@ -63,9 +62,9 @@ $(document).ready(function(){
 </style>
 </head>
 <body>
-<%@ include file="../common/nav.jsp"%>
 <div class="container">
-    <c:if test="${board == null || board.isEmpty()}">
+<%@ include file="../common/nav.jsp"%>
+    <c:if test="${board eq null || board.isEmpty()}">
         <script>
             alert("잘못된 접근입니다.");
             location.href="/";
@@ -74,27 +73,25 @@ $(document).ready(function(){
 
 	<div class="row mt-5 md" id="box-detail">
 		<div class="col-8 mb-3 md">
-			<h3><b>${board.boardSeq }번째 글입니다.</b></h3>
-			<h3><b>${board.title } ${board.boardSeq }</b></h3>
+			<h3><b>${board.title }</b></h3>
 			<p><span>작성자 ${board.nickname}</span>&nbsp;| <span>${board.insertDate }</span>&nbsp;| <span>조회수 ${board.viewcount }</span></p>
 			<p>${board.content }</p>
 		</div>
-		<div id="box-boardbtn" class="btn-right col-10">
-			<button type="button" class="btn btn-primary btn-sm" id="btn-modify-board" onclick="location.href='updateboard/${board.boardSeq}'">수정하기</button>
-			<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
-		</div>
+        <c:if test="${isWriter == true}">
+            <div id="box-boardbtn" class="btn-right col-10">
+			    <button type="button" class="btn btn-primary btn-sm" id="btn-modify-board" onclick="location.href='updateboard/${board.boardSeq}'">수정하기</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >삭제하기</button>
+            </div>
+        </c:if>
 	</div>
 
 	<br><br><hr><br><br>
 
     <c:choose>
-        <c:when test="${empty loginid}">
+        <c:when test="${empty userDto}">
             <div class="row md mb-3">
                 <div class="col-8 md mb-5">
-                    <textarea style="width:100%; text-align:center;" rows="3" placeholder="로그인 후 사용 가능합니다." readonly></textarea>
-                </div>
-                <div class="btn-right col-10">
-                    <button type="button" class="btn btn-primary btn-sm" id="btn-insert-comment" disabled>등록하기</button>
+                    <textarea style="width:100%; text-align:center;" rows="3" placeholder="댓글 기능은 로그인 후 사용 가능합니다." readonly></textarea>
                 </div>
             </div>
         </c:when>
@@ -111,26 +108,32 @@ $(document).ready(function(){
         </c:otherwise>
     </c:choose>
 
-    <c:choose>
-        <c:when test="">
-        </c:when>
-        <c:otherwise>
-        </c:otherwise>
-    </c:choose>
-
 	<div id="box-comment-list">
         <div class="row mb-5 md" id="commentbox" >
-        <c:forEach items="${commentList}" var="comment">
-            <div class="col-8 md" >
-                <p><span>${comment.nickname}</span>&nbsp;<span>${comment.insertDate}</span></p>
-                <p>${comment.content}</p>
-            </div>
-            <div class="col-10 btn-right">
-                <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
-                <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
-            </div>
-		    <hr>
-        </c:forEach>
+        <c:choose>
+            <c:when test="${empty commentList}">
+                <div class="col-8 md" style="text-align:center">
+                    <p>댓글이 없습니다.</p>
+                    <p>첫번째 답변자가 되어주세요!</p>
+                </div>
+            </c:when>
+            <c:otherwise>
+            <span class="col-8 md">총 ${commentList.size()} 개의 댓글</span><br><br>
+                <c:forEach items="${commentList}" var="comment">
+                    <div class="col-8 md" >
+                        <p><span>${comment.nickname}</span>&nbsp;<span>${comment.insertDate}</span></p>
+                        <p>${comment.content}</p>
+                    </div>
+                    <c:if test="${userDto.seq == comment.writer}">
+                        <div class="col-10 btn-right">
+                            <button type="button" class="btn btn-primary btn-sm" id="btn-modify-${comment.commentSeq}" onclick="location.href='/comment/update/${comment.commentSeq}'">수정하기</button>
+                            <button type="button" class="btn btn-danger btn-sm" id="btn-delete-${comment.commentSeq}" onclick="location.href='/comment/delete/${comment.commentSeq}'">삭제하기</button>
+                        </div>
+                    </c:if>
+                    <hr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
         </div>
 	</div>
 
@@ -152,7 +155,6 @@ $(document).ready(function(){
         </div>
       </div>
     </div>
-
 </div>
 
 </body>
