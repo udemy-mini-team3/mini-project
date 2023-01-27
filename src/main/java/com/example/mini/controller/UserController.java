@@ -1,7 +1,9 @@
 package com.example.mini.controller;
 
-import com.example.mini.dao.UserPwdDto;
+import com.example.mini.dto.MailDto;
+import com.example.mini.dto.UserPwdDto;
 import com.example.mini.dto.UserDto;
+import com.example.mini.service.SendEmailService;
 import com.example.mini.service.UserService;
 import com.example.mini.util.SessionConst;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +14,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UserController {
     @Autowired
     @Qualifier("userService")
     UserService service;
+
+    @Autowired
+    SendEmailService sendEmailService;
 
     // 로그인 폼
     @GetMapping("/login")
@@ -90,8 +97,8 @@ public class UserController {
             return "user/myPage";
         }
 
-        if (checkDuplicateEmail(userDto, session)){
-            bindingResult.rejectValue("email", "duplicate.email");
+        if (checkDuplicateNickname(userDto, session)){
+            bindingResult.rejectValue("nickname", "duplicate.nickname");
             return "user/myPage";
         }
 
@@ -101,15 +108,15 @@ public class UserController {
         return "redirect:/myPage";
     }
 
-    //이메일 중복 검사 함수
-    private boolean checkDuplicateEmail(UserDto userDto, HttpSession httpSession) {
-        int emailCount = service.getEmailCount(userDto.getEmail());
+    //닉네임 중복 검사 함수
+    private boolean checkDuplicateNickname(UserDto userDto, HttpSession httpSession) {
+        int nickCount = service.getNicknameCount(userDto.getNickname());
 
         UserDto sessionUserDto = (UserDto) httpSession.getAttribute(SessionConst.LOGIN_USER);
-        if(userDto.getEmail().equals(sessionUserDto.getEmail()))
+        if(userDto.getNickname().equals(sessionUserDto.getNickname()))
             return false;
 
-        if(emailCount > 0){
+        if(nickCount > 0){
             return true;
         }
         return false;
@@ -172,6 +179,25 @@ public class UserController {
             checkResult = true;
         }
         return checkResult;
+    }
+
+    //이메일 존재여부 확인
+    @GetMapping("/findPw")
+    @ResponseBody
+    public Map<String, Boolean> findPw(String email){
+        Map<String,Boolean> json = new HashMap<>();
+        boolean pwFindCheck = service.checkUserEmail(email);
+
+        json.put("check", pwFindCheck);
+
+        return json;
+    }
+
+    //등록된 이메일로 임시비밀번호 발송, 발송된 임시비밀번호로 사용자의 pw를 변경
+    @PostMapping("/findPw/sendEmail")
+    public @ResponseBody void sendEmail(String email){
+        MailDto mailDto = sendEmailService.createMailAndChangePassword(email);
+        sendEmailService.mailSend(mailDto);
     }
 
 }

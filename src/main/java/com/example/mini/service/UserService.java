@@ -8,11 +8,13 @@ public interface UserService {
 
 
     void update(String email, UserDto userDto);
-    int getEmailCount(String email);
+    int getNicknameCount(String nickname);
 
     void delete(String email);
 
     String getPwdBySeq(int seq);
 
     void updatePw(int seq, String newPwd);
+
+    boolean checkUserEmail(String email);
 }

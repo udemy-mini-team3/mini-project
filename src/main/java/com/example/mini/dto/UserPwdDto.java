@@ -1,22 +1,24 @@
-package com.example.mini.dao;
+package com.example.mini.dto;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Component
 public class UserPwdDto {
 
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$",
-            message = "영문 대/소문자,특수문자,숫자 포함(8~16자)")
+    @NotEmpty(message = "기존 비밀번호 값을 입력해주세요.")
+    @Size(max = 20, message = "비밀번호는 20자를 넘을 수 없습니다.")
     private String oldPwd;
 
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$",
-            message = "영문 대/소문자,특수문자,숫자 포함(8~16자)")
+    @NotEmpty(message = "새 비밀번호 값을 입력해주세요.")
+    @Size(max = 20, message = "비밀번호는 20자를 넘을 수 없습니다.")
     private String newPwd;
 
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$",
-            message = "영문 대/소문자,특수문자,숫자 포함(8~16자)")
+    @NotEmpty(message = "새 비밀번호 확인 값을 입력해주세요.")
+    @Size(max = 20, message = "비밀번호는 20자를 넘을 수 없습니다.")
     private String newPwdConf;
 
     public UserPwdDto() {
