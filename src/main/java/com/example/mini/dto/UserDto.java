@@ -1,9 +1,12 @@
 package com.example.mini.dto;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Component
 public class UserDto {
@@ -12,7 +15,8 @@ public class UserDto {
     @Email(message = "이메일 양식에 맞게 입력해주세요.")
     private String email;
 
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{2,10}$" , message = "닉네임은 특수문자를 포함하지 않은 2~10자리여야 합니다.")
+    @NotEmpty(message = "닉네임 값을 입력해주세요.")
+    @Size(max = 10, message = "닉네임은 10자를 넘을 수 없습니다.")
     private String nickname;
     private String pw, insertDate, updateDate;
     private char deleted;

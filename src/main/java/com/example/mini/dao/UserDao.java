@@ -13,10 +13,12 @@ public interface UserDao {
 
 
     void update(@Param("email") String email, @Param("userDto") UserDto dto);
-    int getEmailCount(String email);
+    int getNicknameCount(String nickname);
     void delete(String email);
 
     String getPwdBySeq(int seq);
 
     void updatePw(@Param("seq") int seq, @Param("newPwd") String newPwd);
+
+    int checkUserEmail(String email);
 }
