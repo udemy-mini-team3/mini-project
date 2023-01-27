@@ -195,9 +195,10 @@ public class UserController {
 
     //등록된 이메일로 임시비밀번호 발송, 발송된 임시비밀번호로 사용자의 pw를 변경
     @PostMapping("/findPw/sendEmail")
-    public @ResponseBody void sendEmail(String email){
+    public @ResponseBody void sendEmail(String email, HttpSession session){
         MailDto mailDto = sendEmailService.createMailAndChangePassword(email);
         sendEmailService.mailSend(mailDto);
+        session.invalidate();
     }
 
 }
