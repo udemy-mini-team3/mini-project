@@ -1,5 +1,6 @@
 package com.example.mini.dao;
 
+import com.example.mini.dto.BoardDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -19,10 +20,13 @@ public interface BoardDao {
     Map<String, Object> getBoard(int seq);
 
     // getBoardList
-    // updateBoard
+
     // deleteBoard
     void deleteBoard(int seq);
 
     // insertBoard
 	void updateViewcount(int seq);
+	void updateBoard(BoardDto dto);
+	void insertBoard(BoardDto dto);
+
 }

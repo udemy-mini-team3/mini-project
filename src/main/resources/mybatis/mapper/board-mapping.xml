@@ -27,13 +27,13 @@
     <select id="getRecentBoards" resultMap="boardMap">
         SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
         FROM board b JOIN user u ON b.writer = u.seq
-        order by boardSeq asc
+        order by boardSeq desc
     </select>
 
     <select id="getPastBoards" resultMap="boardMap">
         SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
         FROM board b JOIN user u ON b.writer = u.seq
-        order by boardSeq desc
+        order by boardSeq asc
     </select>
 
     <select id="getFamousBoards" resultMap="boardMap">
@@ -54,6 +54,15 @@
 
     <update id="updateViewcount" parameterType="int">
         update board set viewcount = viewcount+1 where seq = #{seq};
+    </update>
+
+    <insert id="insertBoard" parameterType="boardDto">
+        insert into board (writer, title, content, insert_date, viewcount)
+        values(#{writer}, #{title}, #{content},now(),0)
+    </insert>
+
+    <update id="updateBoard" parameterType="boardDto">
+        update board set title=#{title}, content=#{content} where seq=#{seq}
     </update>
 
 </mapper>

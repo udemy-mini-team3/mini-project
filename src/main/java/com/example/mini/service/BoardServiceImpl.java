@@ -1,6 +1,7 @@
 package com.example.mini.service;
 
 import com.example.mini.dao.BoardDao;
+import com.example.mini.dto.BoardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,4 +51,15 @@ public class BoardServiceImpl implements BoardService {
     public List<Map<String, Object>> getFamousBoards() {
         return dao.getFamousBoards();
     }
+
+    @Override
+    public void insertBoard(BoardDto dto) {
+        dao.insertBoard(dto);
+    }
+
+    @Override
+    public void updateBoard(BoardDto dto) {
+        dao.updateBoard(dto);
+    }
+
 }
