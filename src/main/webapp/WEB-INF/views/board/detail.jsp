@@ -35,8 +35,8 @@ $(document).ready(function(){
                     + "<p>" + data[i].content + "</p>"
                     + "</div>"
                     + "<div class='col-10 btn-right'>"
-                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-${comment.commentSeq}' onclick='location.href='/comment/update/${comment.commentSeq}''>수정하기</button>"
-                    + "<button type='button' class='btn btn-danger btn-sm' id='btn-delete-${comment.commentSeq}' onclick='location.href='/comment/delete/${comment.commentSeq}''>삭제하기</button></div>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-"+data[i].commentSeq+"' onclick='location.href='\/comment\/update\/"+data[i].commentSeq+"''>수정하기</button>"
+                    + "<button type='button' class='btn btn-danger btn-sm' id='btn-delete-"+data[i].commentSeq+"' onclick='location.href='\/comment\/delete\/"+data[i].commentSeq+"''>삭제하기</button></div>"
                     + "</div>"
                     + "<hr>");
                 }},
@@ -119,7 +119,7 @@ $(document).ready(function(){
         <div class="row mb-5 md" id="commentbox" >
         <c:choose>
             <c:when test="${empty commentList}">
-                <div class="col-8 md" text-align="center">
+                <div class="col-8 md" style="text-align:center">
                     <p>댓글이 없습니다.</p>
                     <p>첫번째 답변자가 되어주세요!</p>
                 </div>
