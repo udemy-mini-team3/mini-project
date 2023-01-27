@@ -35,8 +35,8 @@ $(document).ready(function(){
                     + "<p>" + data[i].content + "</p>"
                     + "</div>"
                     + "<div class='col-10 btn-right'>"
-                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-"+data[i].commentSeq+"' onclick='location.href='\/comment\/update\/"+data[i].commentSeq+"''>수정하기</button>"
-                    + "<button type='button' class='btn btn-danger btn-sm' id='btn-delete-"+data[i].commentSeq+"' onclick='location.href='\/comment\/delete\/"+data[i].commentSeq+"''>삭제하기</button></div>"
+                    + "<button type='button' class='btn btn-primary btn-sm' id='btn-modify-"+data[i].commentSeq+"' onclick=\"location.href='/comment/update/"+data[i].commentSeq+"'\">수정하기</button>"
+                    + "<button type='button' class='btn btn-danger btn-sm' id='btn-delete-"+data[i].commentSeq+"' onclick=\"location.href='/comment/delete/"+data[i].commentSeq+"'\">삭제하기</button></div>"
                     + "</div>"
                     + "<hr>");
                 }},
