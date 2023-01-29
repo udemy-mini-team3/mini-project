@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mini.dao.BoardDao">
+
+    <select id="getBoardCount" resultType="int">
+        select count(*) from board
+    </select>
+
+    <resultMap type="HashMap" id="boardMap">
+        <result property="userSeq" column="userSeq"/>
+        <result property="nickname" column="nickname"/>
+        <result property="boardSeq" column="boardSeq"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="insertDate" column="insert_date"/>
+        <result property="viewcount" column="viewcount"/>
+    </resultMap>
+
+    <select id="getBoardList" resultMap="boardMap" parameterType="int">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by boardSeq asc limit #{limit}, 5
+    </select>
+
+    <select id="getRecentBoards" resultMap="boardMap">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by boardSeq desc
+    </select>
+
+    <select id="getPastBoards" resultMap="boardMap">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by boardSeq asc
+    </select>
+
+    <select id="getFamousBoards" resultMap="boardMap">
+        SELECT u.seq as userSeq, u.nickname, b.seq as boardSeq, b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        order by viewcount desc
+    </select>
+
+    <select id="getBoard" resultMap="boardMap" parameterType="int">
+        SELECT u.seq as 'userSeq', u.nickname, b.seq as 'boardSeq', b.title, b.content, b.insert_date, b.viewcount
+        FROM board b JOIN user u ON b.writer = u.seq
+        WHERE b.seq = #{seq}
+    </select>
+
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM board WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateViewcount" parameterType="int">
+        update board set viewcount = viewcount+1 where seq = #{seq};
+    </update>
+
+    <insert id="insertBoard" parameterType="boardDto">
+        insert into board (writer, title, content, insert_date, viewcount)
+        values(#{writer}, #{title}, #{content},now(),0)
+    </insert>
+
+    <update id="updateBoard" parameterType="boardDto">
+        update board set title=#{title}, content=#{content} where seq=#{seq}
+    </update>
+
+</mapper>
