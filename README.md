@@ -29,11 +29,11 @@ body(옵션)  // -> 본문
 
 |태그이름|설명|
 |--|--|
-|Feat|새로운 기능 추가|
-|Fix|버그 수정|
-|Design|UI 디자인 변경|
-|Refactor|코드 리팩토링|
-|Docs|문서 수정|
+|feat|새로운 기능 추가|
+|fix|버그 수정|
+|design|UI 디자인 변경|
+|refactor|코드 리팩토링|
+|docs|문서 수정|
 |chore|빌드 테스크 업데이트, 패키지 매니저 설정|
-|Rename|파일 명 또는 폴더 명 수정|
-|Remove|파일 삭제|
+|rename|파일 명 또는 폴더 명 수정|
+|remove|파일 삭제|
